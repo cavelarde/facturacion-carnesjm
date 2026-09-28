@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Punto de Venta - Carnes JM</title>
+     <style>body {
+	font-family: Arial, sans-serif;
+	background-color: #827F7E;
+	display: flex;
+	padding: 20px;
+	gap: 20px;
+	justify-content: center;
+}
+.contenedor {
+	width: 1000px;
+	display: grid;
+	grid-template-columns: 350px 1fr;
+	gap: 40px;
+}
+.panel-control {
+	background: #666;
+	padding: 20px;
+	border-radius: 8px;
+	color: white;
+	border: 1px solid #333;
+	height: fit-content;
+}
+.etiqueta-verde {
+	background: #C6E0B4;
+	color: black;
+	padding: 8px;
+	font-weight: bold;
+	border: 1px solid #000;
+	margin-bottom: 10px;
+	text-align: center;
+}
+input, select {
+	width: 100%;
+	padding: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #000;
+	box-sizing: border-box;
+	font-size: 16px;
+}
+.total-flotante {
+	background: #E2EFDA;
+	color: black;
+	padding: 10px;
+	border: 1px solid #000;
+	display: flex;
+	justify-content: space-between;
+	font-weight: bold;
+	font-size: 20px;
+	margin-top: 5px;
+}
+.grid-botones {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 5px;
+	margin-top: 10px;
+}
+.btn {
+	padding: 10px;
+	cursor: pointer;
+	font-weight: bold;
+	border: 1px solid #000;
+	text-transform: uppercase;
+}
+.btn-aceptar {
+	background: #FF0000;
+	color: white;
+}
+.btn-cancelar {
+	background: #C6E0B4;
+	color: black;
+}
+.btn-pdf {
+	grid-column: span 2;
+	background: #28a745;
+	color: white;
+	margin-top: 10px;
+}
+/* Cambiamos a 3 columnas: Formulario, Factura y Botones */
+.contenedor {
+	width: 1350px;
+	/* Aumentamos el ancho total */
+	display: grid;
+	grid-template-columns: 350px 620px 250px;
+	/* Definimos los 3 anchos */
+	gap: 20px;
+}
+/* Panel Derecho (Factura) */
+.receipt {
+	width: 580px;
+	background-color: white;
+	padding: 30px;
+	border: 1px solid #ccc;
+	box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+	color: #333;
+}
+.header {
+	text-align: center;
+	margin-bottom: 20px;
+}
+.header h1 {
+	margin: 5px 0;
+	letter-spacing: 2px;
+}
+.info-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	margin-bottom: 20px;
+	font-size: 14px;
+	line-height: 1.6;
+}
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+th {
+	background-color: #e2efda;
+	padding: 8px;
+	border-bottom: 2px solid ;
+}
+td {
+	height: 25px;
+	border-bottom: 1px solid #eee;
+}
+#celda-total {
+	border: 2px solid #696564;
+	/* Grosor de 3px para que parezca "negrita" */
+	font-weight: bold;
+	padding: 9;
+	/* Quitamos el padding de la celda para que el borde se ajuste al div interno */
+}
+.final-total {
+	text-align: left;
+	font-size: 24px;
+	font-weight: bold;
+	color: black;
+	margin-top: 20px;
+}
+.footer {
+	text-align: center;
+	margin-top: 40px;
+	font-size: 12px;
+}
+.signature {
+	margin-top: 30px;
+	border-top: 1px solid black;
+	display: inline-block;
+	width: 300px;
+}
+.panel-lateral {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	/* Espacio uniforme entre botones */
+	padding: 15px;
+	background-color: #6d6d6d;
+	/* Fondo gris de tu imagen */
+	border-radius: 10px;
+	width: 250px;
+}
+.seccion-titulo {
+	background-color: #d1e2c4;
+	/* El verde claro de tus títulos */
+	text-align: center;
+	font-weight: bold;
+	padding: 8px;
+	margin-top: 10px;
+}
+@media print {
+	/* 1. Definir el tamaño del papel térmico de 58mm */
+	@page {
+		size: 58mm auto;
+		margin: 0;
+	}
+
+	/* 2. Ocultar absolutamente todo */
+	body * {
+		visibility: hidden;
+	}
+
+	/* 3. Ajustar el área de la factura únicamente */
+	#area-factura, #area-factura * {
+		visibility: visible;
+	}
+
+	#area-factura {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 48mm !important; /* Ancho imprimible real de una POS-58 */
+		padding: 2mm !important;
+		margin: 0 !important;
+		box-shadow: none !important;
+		border: none !important;
+		font-size: 20px !important; /* Tamaño legible para papel térmico */
+		color: #000 !important;
+	}
+
+	/* 4. Adaptar textos y márgenes del ticket */
+	#area-factura h1 {
+		font-size: 14px !important;
+		margin: 2px 0 !important;
+	}
+
+	#area-factura p, #area-factura small {
+		font-size: 9px !important;
+		line-height: 1.2 !important;
+	}
+
+	.info-grid {
+		display: block !important; /* Cambiar grid a bloque para no apretar datos */
+		font-size: 9px !important;
+		margin-bottom: 5px !important;
+	}
+
+	.info-grid div {
+		text-align: left !important;
+	}
+
+	/* 5. Ajustar la tabla de productos para 58mm */
+	#area-factura table {
+		width: 100% !important;
+		font-size: 9px !important;
+	}
+
+	#area-factura th, #area-factura td {
+		padding: 2px 1px !important;
+		height: auto !important;
+	}
+
+	#celda-total {
+		border: 1px solid #000 !important;
+		padding: 2px !important;
+	}
+
+	.signature {
+		width: 100% !important;
+		margin-top: 15px !important;
+	}	
+}
+
+/* Fondo oscuro detrás del modal */
+.modal-overlay {
+	display: none;
+	/* Oculto por defecto */
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	/* Oscurece el fondo */
+	backdrop-filter: blur(3px);
+}
+/* Caja del Modal */
+.modal-content {
+	background-color: #f4f4f4;
+	margin: 5% auto;
+	width: 60%;
+	max-width: 700px;
+	border-radius: 8px;
+	box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+	overflow: hidden;
+	font-family: 'Arial', sans-serif;
+}
+/* Encabezado Verde (estilo Lector de Barras) */
+.modal-header {
+	background-color: #c5e1a5;
+	/* Verde claro de tu interfaz */
+	padding: 40px;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	border-bottom: 2px solid #424242;
+}
+:root {
+    --verde-principal: #aed581; /* El tono verde de tu imagen */
+    --verde-oscuro: #558b2f;
+    --gris-fondo: #f5f5f5;
+}
+
+.modal-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+/* Cabecera reducida */
+.modal-header {
+    background-color: var(--verde-principal);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--verde-oscuro);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.close-btn {
+    background: #fff;
+    border: 1px solid #c0c0c0;
+    color: #d32f2f;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 2px 8px;
+    line-height: 1;
+}
+
+/* Sección de Filtros */
+.filter-section {
+    background-color: var(--verde-principal);
+    padding: 0 20px 15px 20px; /* Menos padding arriba para compactar */
+}
+
+.search-bar {
+    margin-bottom: 15px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+/* Alineación horizontal de controles */
+.filter-controls {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.3); /* Fondo sutil para agrupar */
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.input-group input, .input-group select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: white;
+}
+
+.filter-btn {
+    padding: 8px 15px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.filter-btn:hover {
+    background-color: #ddd;
+}
+
+/* Tabla Estilo Factura */
+.modal-body {
+	padding: 20px;
+	max-height: 400px;
+	overflow-y: auto;
+}
+.tabla-ventas-modal {
+	width: 100%;
+	border-collapse: collapse;
+	background: white;
+}
+.tabla-ventas-modal th {
+	background-color: #e0e0e0;
+	padding: 10px;
+	text-align: left;
+	border-bottom: 2px solid #424242;
+}
+.tabla-ventas-modal td {
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
+}
+/* Footer Naranja (estilo Botón Reiniciar) */
+.modal-footer {
+	background-color: #ef6c00;
+	color: white;
+	padding: 15px;
+	text-align: right;
+}
+.modal-footer h3 {
+	margin: 0;
+}
+</style>
+
+</head>
+<body>
+
+    <div class="contenedor">
+    <div class="panel-control">
+        <div class="etiqueta-verde">LECTOR DE BARRAS</div>
+        <input type="text" id="input-codigo" placeholder="Escanee aquí..." autofocus>
+        
+        <div class="etiqueta-verde">ENTRADA MANUAL</div>
+        <input type="text" id="prod-nombre" placeholder="PRODUCTO" list="lista-productos-manual">
+        <datalist id="lista-productos-manual">
+            <option value="	PRODUCTOS VARIOS">
+     <option value="	PIERNA DE CERDO">
+     <option value="	LOMO DE CERDO">
+     <option value="	COSTILLA DE CERDO">
+     <option value="	TOCINETA BARRIGUERO">
+     <option value="	ESPINAZO DE CERDO">
+     <option value="	CHICHARRON DE CERDO">
+     <option value="	PEZUNA GRANDE">
+     <option value="	OREJAS DE CERDO">
+     <option value="	EMPEYA">
+     <option value="	HUESO OSOBUCO CERDO">
+     <option value="	BONDIOLA DE CERDO">
+     <option value="	GALLINA">
+     <option value="	BOLA NEGRA DE RES">
+     <option value="	PUNTA DE ANCA DE RES">
+     <option value="	MUCHACHO DE RES">
+     <option value="	POSTA DE RES">
+     <option value="	LOMO VICHE DE RES">
+     <option value="	PECHO DE RES">
+     <option value="	FALDA DE RES">
+     <option value="	ESPALDILLA DE RES">
+     <option value="	BARCINO DE RES">
+     <option value="	SOBREBARRIGA DE RES">
+     <option value="	PUNTA DE FALDA DE RES">
+     <option value="	TABLA">
+     <option value="	LAGARTO DE RES">
+     <option value="	CALLO DE RES">
+     <option value="	COSTILLA DE RES ESPECIAL">
+     <option value="	MOLIDA DE RES ESPECIAL">
+     <option value="	MORRILLO DE RES">
+     <option value="	HIGADO DE RES">
+     <option value="	PAJARILLA DE RES">
+     <option value="	LENGUA DE RES">
+     <option value="	CHURRASCO DE RES">
+     <option value="	REVOLTURA">
+     <option value="	PATA DE RES">
+     <option value="	BONDIOLA DE CERDO">
+     <option value="	CHUNCHURRIA">
+     <option value="	BOJE DE RES">
+     <option value="	HUESO DE SUSTANCIA">
+     <option value="	SOLOMITO">
+     <option value="	CHORIZO">
+     <option value="	JAMONADA">
+     <option value="	LOMO AHUMADO">
+    
+</datalist>
+
+        <input type="number" id="prod-cant" placeholder="Cantidad/Peso">
+        <input type="number" id="prod-precio" placeholder="Precio Unitario ($)">
+
+        <div class="total-flotante">
+            <span>TOTAL</span>
+            <span id="display-total">$ 0</span>
+        </div>
+
+        <div style="margin: 5px 0;">
+            <label style="color: white; font-size: 1em;">FORMA DE PAGO:</label>
+            <select id="select-pago" onchange="actualizarMetodoPago()">
+                <option value="EFECTIVO">EFECTIVO</option>
+                <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+                <option value="CREDITO">CRÉDITO</option>
+            </select>
+        </div>
+
+        <div class="grid-botones">
+            <button class="btn btn-aceptar" onclick="agregarManual()">ACEPTAR</button>
+            <button class="btn btn-cancelar" onclick="limpiarTodo()">LIMPIAR</button>
+            <button class="btn btn-pdf" onclick="generarPDF()">IMPRIMIR PDF</button>
+        </div>
+    </div>
+
+    <!-- Factura -->
+    <!-- Cambia esto en tu HTML -->
+        <div class="receipt" id="area-factura">
+        <div class="header">
+            <p><strong>DIRECCIÓN:</strong> Carrera 9 # 34-02 esquina<br>
+            <strong>TELÉFONO:</strong> 3204042324<br>
+            <strong>NIT:</strong> 15930363</p>
+            <h1>CARNES JM</h1>
+        </div>
+
+        <div class="info-grid">
+            <div>
+			<!-- Estructura HTML -->
+   
+                <strong>FACTURA N°: </strong><span id="num-factura">0001</span><br>        
+				<strong>CLIENTE:</strong> CONSUMIDOR FINAL<br>
+				<strong>PAGO:</strong> <span id="metodo-pago-factura">EFECTIVO</span><br>
+				
+               
+            </div>
+            <div class="text-align: right;">
+			    <strong>FECHA:</strong> <span id="fecha-actual"></span><br>
+                <strong>HORA:</strong> <span id="hora-actual"></span><br>
+                <strong>DETALLE:</strong> VENTA DIRECTA<br>
+            </div>
+        </div>
+
+         <table>
+            <thead>
+                <tr>
+                    <th>NOMBRE</th>
+                    <th>CANT/PESO</th>
+                    <th>VALOR/U</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-body"></tbody>
+            <tfoot>
+   <tr class="fila-total-fija">
+    <!-- 1. Creamos 3 celdas vacías para ocupar el espacio de las primeras columnas -->
+    <td></td>
+    <td></td>
+    <td></td>
+
+    <!-- 2. En la cuarta celda ponemos el contenido con Flexbox -->
+    <td id="celda-total">
+        <div style="display: flex; justify-content: space-between; font-weight: bold; padding: 1px; min-width: 120px;">
+            <span>TOTAL</span>
+            <span id="total-final">$ 0.00</span>
+        </div>
+    </td>
+</tr>
+
+
+            </tfoot>
+        </table>
+        
+
+        <div class="footer">
+            <p>🍴<br>GRACIAS POR SU COMPRA - CARNES JM</p>
+            <div style="text-align: left; margin-top: 20px;">
+                <strong>CLIENTE (FIRMA):</strong> <span class="signature"></span><br>
+                <small>Acepto las condiciones de compra y retiro.</small>
+            </div>
+        </div>
+    </div>
+	<!-- ESTE ES EL CONTENEDOR MAESTRO -->
+<div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; width: 100%;">
+
+  <!-- 1. TU INTERFAZ ACTUAL (Formulario, tablas, etc.) -->
+  <div id="interfaz-venta" style="flex: 1;">
+    <!-- Aquí pega todo el código de tu factura o área de venta -->
+   
+  </div>
+
+  <!-- 2. EL PANEL DE BOTONES (A la derecha) -->
+  <div style="text-align: left;">
+  <div id="panel-derecho" style="width: 250px; background-color: #6d6d6d; padding: 15px; border-radius: 10px; border: 1px solid #333;">
+    
+    <div style="background-color: #d1e2c4; text-align: center; font-weight: bold; padding: 8px; margin-bottom: 10px; border: 1px solid #000;">
+      GESTIÓN
+    </div>
+
+    <button onclick="cargarVentasEnModal()" style="width: 100%; background-color: #4a4a4a; color: white; padding: 12px; margin-bottom: 8px; border: 1px solid #888; cursor: pointer; text-align: left;">
+      📊 VENTAS DEL DÍA
+    </button>
+	
+    <button style="width: 100%; background-color: #4a4a4a; color: white; padding: 12px; margin-bottom: 8px; border: 1px solid #888; cursor: pointer; text-align: left;">
+      📦 INVENTARIO
+    </button>
+	<button id="btnAbrirGastos" onclick="document.getElementById('modalGastos').style.display='block'" style="width: 100%; background-color: #9c4caf; color: white; padding: 12px; margin-bottom: 20px; border: 1px solid #888; cursor: pointer; text-align: left;"> 
+    💸 GASTOS 
+</button>
+
+    <div style="background-color: #d1e2c4; text-align: center; font-weight: bold; padding: 8px; margin-bottom: 10px; border: 1px solid #000;">
+      SISTEMA
+    </div>
+
+    <button style="width: 100%; background-color: #d35400; color: white; padding: 12px; border: 1px solid #888; cursor: pointer; text-align: left; font-weight: bold;">
+      🔄 REINICIAR APP
+    </button>
+	
+	<div style="margin-top:10px; background:#fff; padding:12px; border-radius:5px; color: #333; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid #ccc; padding-bottom: 5px;">
+    <strong style="color: #2c3e50; font-size: 0.9em;">📊 CUADRE DE CAJA DIARIO</strong>
+    <button onclick="calcularResumenYBalancetHoy()" style="background: none; border: none; cursor: pointer; font-size: 1.1em;" title="Actualizar Caja">🔄</button>
+  </div>
+  
+  <div style="margin-top:10px; background:#fff; padding:12px; border-radius:5px; color: #333; box-shadow: 0 2px 5px rgba(0,0,0,0.15);">
+  <div style="border-bottom: 1px solid #ccc; padding-bottom: 8px; margin-bottom: 8px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+      <strong style="color: #2c3e50; font-size: 0.9em;">📊 RESUMEN DE CAJA</strong>
+      <button onclick="buscarCajaPorFecha()" style="background: none; border: none; cursor: pointer; font-size: 1.1em;" title="Actualizar / Buscar">🔄</button>
+    </div>
+    <input type="date" id="fechaFiltroCaja" onchange="buscarCajaPorFecha()" style="width: 100%; padding: 4px; border: 1px solid #ccc; border-radius: 3px; font-size: 0.85em; background: #f9f9f9;">
+  </div>
+  
+  <div style="margin-bottom: 6px;">
+    <span style="color: #27ae60; font-weight: bold; font-size: 0.85em;">📥 INGRESOS:</span><br>
+    💵 Efectivo: <span id="totalEfectivo" style="font-weight: bold; float: right;">$0</span><br>
+    💳 Transf: <span id="totalTransferencia" style="font-weight: bold; float: right;">$0</span><br>
+    🧾 Crédito: <span id="totalCredito" style="font-weight: bold; float: right;">$0</span>
+    <div style="clear: both; border-top: 1px dashed #eee; margin-top: 4px; padding-top: 2px; font-size: 0.9em; color: #555;">
+      Total Ventas: <span id="subtotalIngresos" style="float: right; font-weight: bold;">$0</span>
+    </div>
+  </div>
+
+  <div style="margin-bottom: 6px; clear: both; border-top: 1px dashed #ccc; padding-top: 4px;">
+    <span style="color: #c0392b; font-weight: bold; font-size: 0.85em;">📤 EGRESOS:</span><br>
+    💸 Gastos: <span id="subtotalGastos" style="font-weight: bold; float: right; color: #c0392b;">$0</span>
+  </div>
+
+  <div style="clear: both; margin-top: 8px; padding-top: 6px; border-top: 2px solid #333; font-size: 1.05em;">
+    <strong>💰 BALANCE NETO:</strong> 
+    <span id="saldoNetoFinal" style="font-weight: bold; float: right;">$0</span>
+  </div>
+</div>
+</div>
+</div>
+	 
+	 </div>
+	 <div id="modalGastos" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999;">
+    <div style="background: #2e2e2e; color: white; width: 320px; margin: 10% auto; padding: 20px; border: 2px solid #9c4caf; border-radius: 5px;">
+        <h3 style="margin-top: 0; color: #9c4caf;">Registrar Gasto</h3>
+        
+        <label>Concepto:</label>
+        <input type="text" id="gastoConcepto" style="width: 100%; margin: 10px 0; padding: 8px; background: #444; border: 1px solid #888; color: white;">
+		<label for="gastoTipo">Tipo de Gasto:</label>
+        <select id="gastoTipo" style="background: #444; color: white;">
+          <option value="Gastos">Gastos Generales</option>
+          <option value="Pagos Proveedor">Pago Proveedores</option>
+          <option value="Prestamos Int">Préstamos Internos</option>
+          <option value="Salario Empleados">Salario Empleados</option>
+        </select>
+        
+        <label>Monto ($):</label>
+        <input type="number" id="gastoMonto" style="width: 100%; margin: 10px 0; padding: 8px; background: #444; border: 1px solid #888; color: white;">
+
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <button id="btnGuardarGasto" style="flex: 1; background: #4caf50; color: white; border: none; padding: 10px; cursor: pointer; font-weight: bold;">ACEPTAR</button>
+            <button id="btnCerrarGastos" style="flex: 1; background: #f44336; color: white; border: none; padding: 10px; cursor: pointer; font-weight: bold;">CANCELAR</button>
+        </div>
+    </div>
+</div> 
+
+	 
+
+	<!-- Modal Ventas del Día -->
+<div id="modalVentas" class="modal-overlay">
+    <div class="modal-container">
+    <!-- Cabecera Slim -->
+    <div class="modal-header">
+        <h2>RESUMEN DE VENTAS DEL DÍA</h2>
+        <button class="close-btn">&times;</button>
+    </div>
+
+    <!-- Sección de Filtros -->
+    <div class="filter-section">
+    <div class="search-bar">
+        <input type="text" id="inputBusqueda" onkeyup="filtrarTabla()" placeholder="Buscar por cliente o factura...">
+    </div>
+    
+    <div class="filter-controls">
+        <div class="input-group">
+    <label>Desde:</label>
+    <input type="date" id="filtroDesde" onchange="cargarVentasEnModal()">
+</div>
+<div class="input-group">
+    <label>Hasta:</label>
+    <input type="date" id="filtroHasta" onchange="cargarVentasEnModal()">
+</div>
+<div class="input-group">
+    <label>Método:</label>
+    <select id="filtroPago" onchange="cargarVentasEnModal()">
+        <option value="">Todos los pagos</option>
+        <option value="EFECTIVO">EFECTIVO</option>
+        <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+        <option value="CREDITO">CREDITO</option>
+    </select>
+</div>
+        <button class="filter-btn" onclick="filtrarTabla()">🔍 Actualizar</button>
+    </div>
+</div>
+
+        <div class="modal-body">
+            <table class="tabla-ventas-modal">
+                <thead>
+                    <tr>
+                <th>Fecha</th>
+				<th>hora</th>
+                <th>Factura</th>
+                <th>Cliente</th>
+                <th>metodo</th>
+                <th>Total</th>
+            </tr>
+                </thead>
+                <tbody id="cuerpoTablaVentas"></tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <h3 id="granTotalDia">TOTAL GENERAL: $0</h3>
+        </div>
+    </div>
+</div>
+
+
+
+ 
+
+    </div>
+</div>
+
+<Script>
+
+    let granTotal = 0;
+    // Intenta leer el número guardado, si no existe, empieza en 1
+    let nroFactura = parseInt(localStorage.getItem('ultimoNroFactura')) || 1;
+
+    // Función para poner los ceros a la izquierda (0001)
+    function formatearFactura(num) {
+        return num.toString().padStart(4, '0');
+    }
+
+    // Mostramos el número inicial apenas cargue la página
+    window.addEventListener('load', () => {
+        const el = document.getElementById('num-factura');
+        if (el) el.textContent = formatearFactura(nroFactura);
+		inicializarCajaHoy();
+    });
+
+
+
+    // Limpiamos los nombres del inventario (quitando espacios y saltos de línea)
+    const inventarioJM = {
+        "000001": {
+            nombre: "PIERNA DE CERDO",
+            precio: 22000
+        },
+        "000002": {
+            nombre: "LOMO DE CERDO",
+            precio: 26000
+        },
+        "000003": {
+            nombre: "COSTILLA DE CERDO",
+            precio: 26000
+        },
+        "000004": {
+            nombre: "TOCINETA BARRIGUERO",
+            precio: 26000
+        },
+        "000005": {
+            nombre: "ESPINAZO DE CERDO",
+            precio: 20000
+        },
+        "000006": {
+            nombre: "CHICHARRON DE CERDO",
+            precio: 24000
+        },
+        "000007": {
+            nombre: "PEZUNA GRANDE",
+            precio: 10000
+        },
+        "000008": {
+            nombre: "OREJAS DE CERDO",
+            precio: 5000
+        },
+        "000009": {
+            nombre: "EMPEYA",
+            precio: 12000
+        },
+        "000010": {
+            nombre: "HUESO OSOBUCO CERDO",
+            precio: 15000
+        },
+        "000011": {
+            nombre: "BONDIOLA DE CERDO",
+            precio: 22000
+        },
+        "000012": {
+            nombre: "GALLINA",
+            precio: 36000
+        },
+        "000013": {
+            nombre: "BOLA NEGRA DE RES",
+            precio: 36000
+        },
+        "000014": {
+            nombre: "PUNTA DE ANCA DE RES",
+            precio: 40000
+        },
+        "000015": {
+            nombre: "MUCHACHO DE RES",
+            precio: 36000
+        },
+        "000016": {
+            nombre: "POSTA DE RES",
+            precio: 36000
+        },
+        "000017": {
+            nombre: "LOMO VICHE DE RES",
+            precio: 40000
+        },
+        "000018": {
+            nombre: "PECHO DE RES",
+            precio: 28000
+        },
+        "000019": {
+            nombre: "FALDA DE RES",
+            precio: 28000
+        },
+        "000020": {
+            nombre: "ESPALDILLA DE RES",
+            precio: 30000
+        },
+        "000021": {
+            nombre: "BARCINO DE RES",
+            precio: 30000
+        },
+        "000022": {
+            nombre: "SOBREBARRIGA DE RES",
+            precio: 28000
+        },
+        "000024": {
+            nombre: "PUNTA DE FALDA DE RES",
+            precio: 30000
+        },
+        "000025": {
+            nombre: "TABLA",
+            precio: 36000
+        },
+        "000026": {
+            nombre: "LAGARTO DE RES",
+            precio: 26000
+        },
+        "000027": {
+            nombre: "CALLO DE RES",
+            precio: 18000
+        },
+        "000028": {
+            nombre: "COSTILLA DE RES ESPECIAL",
+            precio: 26000
+        },
+        "000029": {
+            nombre: "MOLIDA DE RES ESPECIAL",
+            precio: 26000
+        },
+        "000030": {
+            nombre: "MORRILLO DE RES",
+            precio: 30000
+        },
+        "000031": {
+            nombre: "HIGADO DE RES",
+            precio: 26000
+        },
+        "000032": {
+            nombre: "PAJARILLA DE RES",
+            precio: 26000
+        },
+        "000033": {
+            nombre: "LENGUA DE RES",
+            precio: 28000
+        },
+        "000034": {
+            nombre: "CHURRASCO DE RES",
+            precio: 40000
+        },
+        "000036": {
+            nombre: "REVOLTURA",
+            precio: 20000
+        },
+        "000049": {
+            nombre: "PATA DE RES",
+            precio: 15000
+        },
+        "000052": {
+            nombre: "CHUNCHURRIA",
+            precio: 12000
+        },
+        "000053": {
+            nombre: "BOJE DE RES",
+            precio: 18000
+        },
+        "000054": {
+            nombre: "HUESO DE SUSTANCIA",
+            precio: 12000
+        },
+        "000067": {
+            nombre: "SOLOMITO",
+            precio: 40000
+        },
+        "000066": {
+            nombre: "CHORIZO",
+            precio: 7000
+        },
+        "000047": {
+            nombre: "JAMONADA",
+            precio: 16000
+        },
+        "000038": {
+            nombre: "LOMO AHUMADO",
+            precio: 32000
+        }
+    };
+
+    // Lógica del Lector de Barras
+    document.getElementById('input-codigo').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const codigo = this.value.trim();
+
+            // Si es código de báscula (ej: 200000101500C)
+            if (codigo.length >= 12) {
+                const idProd = codigo.substring(1, 7); // Captura del dígito 2 al 7 (6 dígitos)
+                const pesoGramos = parseInt(codigo.substring(7, 12));
+                const pesoKg = pesoGramos / 1000;
+
+                const producto = inventarioJM[idProd];
+                if (producto) {
+                    insertarFila(producto.nombre, pesoKg, producto.precio);
+                } else {
+                    alert("Producto no encontrado en inventario: " + idProd);
+                }
+            }
+            // Si es un código corto manual
+            else if (inventarioJM[codigo]) {
+                const p = inventarioJM[codigo];
+                insertarFila(p.nombre, 1, p.precio);
+            }
+
+            this.value = ''; // Limpiar para el siguiente scan
+        }
+    });
+
+    // ... (mantén tu objeto inventarioJM igual)
+
+    // ... (mantén tu objeto inventarioJM igual)
+
+    function insertarFila(nombre, cant, precio) {
+        const subtotal = Math.round(cant * precio);
+        const tabla = document.getElementById('tabla-body');
+
+        const fila = document.createElement('tr');
+        // Agregamos estilos de alineación para que se vea ordenado
+        fila.innerHTML = `
+        <td>${nombre}</td>
+        <td style="text-align: center;">${cant.toFixed(3)}</td>
+        <td style="text-align: right;">$ ${precio.toLocaleString()}</td>
+        <td style="text-align: right;">$ ${subtotal.toLocaleString()}</td>
+    `;
+
+        tabla.appendChild(fila);
+        granTotal += subtotal;
+        actualizarDisplays();
+    }
+
+    function actualizarDisplays() {
+        const formato = "$ " + granTotal.toLocaleString();
+        document.getElementById('display-total').innerText = formato;
+        // Usamos innerHTML para mantener el <strong> si existe
+        document.getElementById('total-final').innerHTML = `<strong>${formato}</strong>`;
+    }
+
+    // Esta función es vital para que el total de la factura coincida con el selector
+    function actualizarMetodoPago() {
+        const nuevoMetodo = document.getElementById('select-pago').value;
+        const displayFactura = document.getElementById('metodo-pago-factura');
+        if (displayFactura) displayFactura.innerText = nuevoMetodo;
+    }
+    const URL_NUBE = 'https://script.google.com/macros/s/AKfycbxVidFXRjwamBIVd0qop9OlwdvJtNyCKymLQXgeHSX3oMgpOha0HWgq4bqaQoOLHurK/exec';
+    if (!URL_NUBE) {
+        alert("Falta configurar URL de Google Script");
+    }
+
+    function guardarEnLaNube() {
+
+        const datos = {
+            fecha: document.getElementById('fecha-actual').textContent,
+            hora: document.getElementById('hora-actual').textContent,
+            factura: document.getElementById('num-factura').textContent,
+            cliente: "CONSUMIDOR FINAL",
+            metodo: document.getElementById('select-pago').value,
+            total: Math.round(granTotal)
+        };
+
+        // 🔥 usamos FormData (100% compatible con Google)
+        const formData = new FormData();
+        formData.append("data", JSON.stringify(datos));
+
+        fetch(URL_NUBE, {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.text())
+.then(res => {
+    console.log("Respuesta:", res);
+    // Actualizar cuadre de caja al vender
+    calcularResumenYBalancetHoy();
+})
+}
+
+    function generarPDF() {
+        if (granTotal === 0) {
+            alert("La factura está vacía.");
+            return;
+        }
+
+        // 1. Enviamos a la nube antes de imprimir
+        guardarEnLaNube();
+
+        // 2. Imprimimos
+        window.print();
+
+        setTimeout(() => {
+            if (confirm("¿Desea finalizar la venta y limpiar la pantalla?")) {
+                limpiarTodo();
+            }
+        }, 500);
+    }
+
+    function agregarManual() {
+        const nombre = document.getElementById('prod-nombre').value.trim().toUpperCase();
+        const cant = parseFloat(document.getElementById('prod-cant').value);
+        const precio = parseFloat(document.getElementById('prod-precio').value);
+        if (nombre && cant && precio) {
+            insertarFila(nombre, cant, precio);
+            document.getElementById('prod-nombre').value = '';
+            document.getElementById('prod-cant').value = '';
+            document.getElementById('prod-precio').value = '';
+        }
+    }
+    // BUSCAR PRECIO AUTOMÁTICAMENTE AL SELECCIONAR PRODUCTO
+    document.getElementById('prod-nombre').addEventListener('input', function() {
+        // Obtenemos el texto ingresado, quitamos espacios y lo pasamos a mayúsculas
+        const nombreBusqueda = this.value.trim().toUpperCase();
+        const campoPrecio = document.getElementById('prod-precio');
+
+        // Buscamos en los valores del inventario si el nombre coincide
+        // Usamos .trim() en el nombre del inventario también por seguridad
+        const productoEncontrado = Object.values(inventarioJM).find(p =>
+            p.nombre.trim().toUpperCase() === nombreBusqueda
+        );
+
+        if (productoEncontrado) {
+            campoPrecio.value = productoEncontrado.precio;
+            // Opcional: saltar al campo de cantidad automáticamente
+            document.getElementById('prod-cant').focus();
+        } else {
+            campoPrecio.value = ''; // Limpia el precio si el nombre no coincide
+        }
+    });
+
+    function limpiarTodo() {
+        if (confirm("¿Borrar factura actual?")) {
+            document.getElementById('tabla-body').innerHTML = '';
+            granTotal = 0;
+            actualizarDisplays();
+            // 2. Incrementar el número de factura
+            nroFactura++;
+            // 3. GUARDAR en la memoria del navegador
+            localStorage.setItem('ultimoNroFactura', nroFactura);
+            // 4. Actualizar el número en el HTML (el área donde se ve el número)
+            const elFactura = document.getElementById('num-factura');
+            if (elFactura) {
+                elFactura.textContent = formatearFactura(nroFactura);
+            }
+            console.log("Siguiente factura guardada: " + nroFactura);
+        }
+    }
+
+
+    function actualizarReloj() {
+        const ahora = new Date();
+
+        // Formato de Fecha: DD/MM/YYYY
+        const fecha = ahora.toLocaleDateString('es-ES');
+
+        // Formato de Hora: hh:mm:ss p.m./a.m.
+        const hora = ahora.toLocaleTimeString('es-ES', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true
+        });
+
+        document.getElementById('fecha-actual').textContent = fecha;
+        document.getElementById('hora-actual').textContent = hora;
+    }
+
+    // Ejecutar al cargar y actualizar cada segundo
+    actualizarReloj();
+    setInterval(actualizarReloj, 1000);
+
+
+
+    // Auto-enfoque
+    document.addEventListener('click', (e) => {
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'SELECT') {
+            document.getElementById('input-codigo').focus();
+        }
+    });
+
+
+
+
+    // Cerrar si el usuario hace clic fuera de la caja blanca
+    window.onclick = function(event) {
+        let modal = document.getElementById("modalVentas");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+document.querySelector('.close-btn').addEventListener('click', function() {
+    document.getElementById('modalVentas').style.display = 'none';
+});
+
+    // 2. Llamar al script de Google con manejador de éxito Y de error
+   function cargarVentasEnModal() {
+    document.getElementById("modalVentas").style.display = "block";
+    const tablaBody = document.getElementById("cuerpoTablaVentas");
+    
+    // 1. Capturamos los valores de los filtros
+    const desde = document.getElementById("filtroDesde").value;
+    const hasta = document.getElementById("filtroHasta").value;
+    const metodoSeleccionado = document.getElementById("filtroPago").value; 
+    
+    // 2. Manejo de fechas para evitar que se bloquee en "Hoy"
+    // Si el usuario no elige fecha, podrías querer un rango amplio o solo hoy.
+    // Para ver historial, si 'desde' está vacío, podrías poner una fecha antigua.
+    const fechaInicio = desde || "2024-01-01"; // O una fecha por defecto inicial
+    const fechaFin = hasta || new Date().toISOString().split("T")[0];
+
+    tablaBody.innerHTML = "<tr><td colspan='6'>Cargando historial...</td></tr>";
+
+    // 3. Petición a la nube con las fechas del filtro
+    fetch(`${URL_NUBE}?inicio=${fechaInicio}&fin=${fechaFin}`)
+        .then(res => res.json())
+        .then(data => {
+            tablaBody.innerHTML = "";
+            let totalDia = 0;
+
+            // 4. Filtrar por método de pago localmente (opcional si la API no lo hace)
+            const datosFiltrados = data.filter(fila => {
+                const metodoFila = (fila.metodo || fila.pago || fila.metodoPago || "").toUpperCase();
+                if (metodoSeleccionado === "") return true; // Mostrar todos
+                return metodoFila === metodoSeleccionado;
+            });
+
+            if (datosFiltrados.length === 0) {
+                tablaBody.innerHTML = "<tr><td colspan='6'>No se encontraron ventas en este rango o filtro</td></tr>";
+                document.getElementById("granTotalDia").innerText = "TOTAL: $0";
+                return;
+            }
+
+            // 5. Dibujar la tabla
+            datosFiltrados.forEach(fila => {
+                let tr = document.createElement("tr");
+                const facturaFormateada = String(fila.factura || '0').padStart(4, '0');
+                const metodoCorrecto = fila.metodo || fila.pago || fila.metodoPago || "No reg.";
+
+                tr.innerHTML = `
+                    <td>${fila.fecha}</td>
+                    <td>${fila.hora}</td>
+                    <td>${facturaFormateada}</td> 
+                    <td>${fila.cliente}</td>
+                    <td>${metodoCorrecto}</td> 
+                    <td><b>$${Number(fila.total).toLocaleString()}</b></td>
+                `;
+                tablaBody.appendChild(tr);
+                totalDia += Number(fila.total);
+            });
+
+            document.getElementById("granTotalDia").innerText = "TOTAL: $" + totalDia.toLocaleString();
+        })
+        .catch(err => {
+            tablaBody.innerHTML = "<tr><td colspan='6'>Error de conexión</td></tr>";
+            console.error("Error:", err);
+        });
+}
+ // GASTOS LOGIC
+const btnAbrir = document.getElementById('btnAbrirGastos');
+const modalG = document.getElementById('modalGastos');
+const btnCerrar = document.getElementById('btnCerrarGastos');
+const btnGuardar = document.getElementById('btnGuardarGasto');
+
+// 🔥 ESTAS LÍNEAS ACTIVAN LA APERTURA Y CIERRE DEL MODAL
+if (btnAbrir) {
+    btnAbrir.onclick = function() { modalG.style.display = "block"; }
+}
+if (btnCerrar) {
+    btnCerrar.onclick = function() { modalG.style.display = "none"; }
+}
+
+// De aquí hacia abajo continúa tu función de guardado normal...
+btnGuardar.onclick = function() {
+    const concepto = document.getElementById('gastoConcepto').value.trim();
+    const monto = document.getElementById('gastoMonto').value;
+    const tipoGasto = document.getElementById('gastoTipo').value; 
+    
+    // ... resto del código idéntico
+
+    if (!concepto || !monto) {
+        alert("Por favor, llena todos los campos");
+        return;
+    }
+
+    // Incluimos la acción dentro del objeto para que el backend lo identifique 100% libre de fallos
+    const datosGasto = {
+        accion: "gasto", // <--- Indicador clave para Google Script
+        fecha: new Date().toISOString().split('T')[0], 
+        concepto: concepto,
+        monto: parseFloat(monto),
+        tipoGasto: tipoGasto 
+    };
+
+    btnGuardar.disabled = true;
+    btnGuardar.innerText = "Guardando...";
+
+    // Usamos FormData que ya comprobaste que te funciona perfecto en las ventas
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(datosGasto));
+
+    fetch(URL_NUBE, {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.text())
+    .then(respuesta => {
+        alert("Gasto registrado correctamente");
+        document.getElementById('gastoConcepto').value = "";		
+        document.getElementById('gastoMonto').value = "";
+        modalG.style.display = "none";
+        
+        // 🔥 CORRECCIÓN AQUÍ: Actualiza la caja unificada por fecha inmediatamente
+        if (typeof buscarCajaPorFecha === "function") {
+            buscarCajaPorFecha();
+        }
+    })
+    .catch(error => alert("Error al guardar: " + error))
+    .finally(() => {
+        btnGuardar.disabled = false;
+        btnGuardar.innerText = "ACEPTAR";
+    });
+};
+	function obtenerResumenMetodosHoy() {
+    // 1. Obtener la fecha de hoy en formato YYYY-MM-DD (coincidiendo con la lógica de tu API)
+    const hoy = new Date().toISOString().split("T")[0];
+
+    // 2. Apuntar a los elementos del DOM donde mostraremos los totales
+    const elEfectivo = document.getElementById("totalEfectivo");
+    const elTransferencia = document.getElementById("totalTransferencia");
+    const elCredito = document.getElementById("totalCredito");
+
+    // Mostramos un estado de carga temporal
+    if (elEfectivo) elEfectivo.innerText = "...";
+    if (elTransferencia) elTransferencia.innerText = "...";
+    if (elCredito) elCredito.innerText = "...";
+
+    // 3. Hacer la consulta a la nube filtrando por el día de hoy
+    fetch(`${URL_NUBE}?inicio=${hoy}&fin=${hoy}`)
+        .then(res => res.json())
+        .then(data => {
+            let efectivo = 0;
+            let transferencia = 0;
+            let credito = 0;
+
+            // 4. Sumar los totales recorriendo las ventas recibidas
+            data.forEach(fila => {
+                const metodo = (fila.metodo || fila.pago || fila.metodoPago || "").toUpperCase().trim();
+                const monto = Number(fila.total) || 0;
+
+                if (metodo === "EFECTIVO") {
+                    efectivo += monto;
+                } else if (metodo === "TRANSFERENCIA") {
+                    transferencia += monto;
+                } else if (metodo === "CREDITO" || metodo === "CRÉDITO") {
+                    credito += monto;
+                }
+            });
+
+            // 5. Pintar los resultados formateados con separador de miles
+            if (elEfectivo) elEfectivo.innerText = "$ " + efectivo.toLocaleString();
+            if (elTransferencia) elTransferencia.innerText = "$ " + transferencia.toLocaleString();
+            if (elCredito) elCredito.innerText = "$ " + credito.toLocaleString();
+        })
+        .catch(err => {
+            console.error("Error obteniendo el resumen por método:", err);
+            if (elEfectivo) elEfectivo.innerText = "$ 0";
+            if (elTransferencia) elTransferencia.innerText = "$ 0";
+            if (elCredito) elCredito.innerText = "$ 0";
+        });
+}
+// 1. FUNCIÓN PRINCIPAL: Busca y calcula la caja según la fecha seleccionada
+function buscarCajaPorFecha() {
+    let fechaSeleccionada = document.getElementById("fechaFiltroCaja").value;
+    
+    // Si por alguna razón el campo está vacío, le asignamos la fecha de hoy
+    if (!fechaSeleccionada) {
+        fechaSeleccionada = new Date().toISOString().split("T")[0];
+        document.getElementById("fechaFiltroCaja").value = fechaSeleccionada;
+    }
+
+    const elEfectivo = document.getElementById("totalEfectivo");
+    const elTransferencia = document.getElementById("totalTransferencia");
+    const elCredito = document.getElementById("totalCredito");
+    const elSubIngresos = document.getElementById("subtotalIngresos");
+    const elGastos = document.getElementById("subtotalGastos");
+    const elNeto = document.getElementById("saldoNetoFinal");
+
+    // Indicador visual de carga en el panel
+    if (elEfectivo) elEfectivo.innerText = "...";
+    if (elGastos) elGastos.innerText = "...";
+    if (elNeto) elNeto.innerText = "...";
+
+    // Llamadas en paralelo a la nube usando la fecha elegida
+    const pVentas = fetch(`${URL_NUBE}?inicio=${fechaSeleccionada}&fin=${fechaSeleccionada}`).then(res => res.json());
+    const pGastos = fetch(`${URL_NUBE}?tipo=gasto&inicio=${fechaSeleccionada}&fin=${fechaSeleccionada}`).then(res => res.json()).catch(() => []);
+
+    Promise.all([pVentas, pGastos])
+        .then(([ventas, gastos]) => {
+            let efec = 0, trans = 0, cred = 0, totGastos = 0;
+
+            // Sumar ventas según su método de pago
+            ventas.forEach(f => {
+                const m = (f.metodo || f.pago || f.metodoPago || "").toUpperCase().trim();
+                const total = Number(f.total) || 0;
+                if (m === "EFECTIVO") efec += total;
+                else if (m === "TRANSFERENCIA") trans += total;
+                else if (m === "CREDITO" || m === "CRÉDITO") cred += total;
+            });
+
+            // Sumar egresos/gastos
+            if (Array.isArray(gastos)) {
+                gastos.forEach(g => totGastos += (Number(g.monto) || 0));
+            }
+
+            const totIngresos = efec + trans + cred;
+            const neto = totIngresos - totGastos;
+
+            // Renderizar resultados formateados en el cuadro lateral
+            if(elEfectivo) elEfectivo.innerText = "$ " + efec.toLocaleString();
+            if(elTransferencia) elTransferencia.innerText = "$ " + trans.toLocaleString();
+            if(elCredito) elCredito.innerText = "$ " + cred.toLocaleString();
+            if(elSubIngresos) elSubIngresos.innerText = "$ " + totIngresos.toLocaleString();
+            if(elGastos) elGastos.innerText = "$ " + totGastos.toLocaleString();
+            
+            if(elNeto) {
+                elNeto.innerText = "$ " + neto.toLocaleString();
+                elNeto.style.color = neto >= 0 ? "#27ae60" : "#c0392b";
+            }
+        })
+        .catch(err => {
+            console.error("Error al calcular la caja de la fecha:", err);
+            if (elNeto) elNeto.innerText = "Error";
+        });
+}
+
+// 2. FUNCIÓN DE AUTO-APERTURA: Pone la fecha de hoy al iniciar la página
+function inicializarCajaHoy() {
+    const hoy = new Date().toISOString().split("T")[0];
+    const inputFecha = document.getElementById("fechaFiltroCaja");
+    if (inputFecha) {
+        inputFecha.value = hoy;
+    }
+    buscarCajaPorFecha();
+}
+</script>
+
+</body>
+
+</html>
